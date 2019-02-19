@@ -22,7 +22,86 @@ GET <nom de votre index>/_count
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
 ```
-TODO : ajouter les requêtes ElasticSearch ici
+
+GET 911call/
+
+DELETE /911call
+
+PUT 911call
+{
+  "mappings": {
+    "call": {
+      "properties": {
+        "location": {
+          "type": "geo_point"
+        },
+        "desc": {"type": "text"},
+        "zip": {"type": "integer"},
+        "title": {"type": "text"},
+        "timeStamp": {"type": "date"},
+        "twp": {"type": "text"},
+        "addr": {"type": "text"},
+        "e": {"type": "text"}
+      }
+    }
+  }
+}
+
+
+
+GET /911call/call/_count
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+      "filter": {
+        "geo_distance": {
+         "distance" : "0.5km",
+            "location" : {
+              "lat" : 40.241493,
+              "lon" : -75.283783
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+POST /911call/call/_count
+{
+    "query": {
+        "match": {
+           "title": "EMS"
+        }
+    }
+}
+POST /911call/call/_count
+{
+    "query": {
+        "match": {
+           "title": "Traffic"
+        }
+    }
+}
+
+POST /911call/call/_count
+{
+    "query": {
+        "match": {
+           "title": "Fire "
+        }
+    }
+}
+
+
+
+
+
 ```
 
 ## Kibana
