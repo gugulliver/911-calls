@@ -201,6 +201,62 @@ res :
 
 
 
+qu 4:
+
+GET /911call/call/_search
+{
+  "size" : 0, 
+  "query": { 
+    "bool": {
+      "must": [
+        { "match": { "title": "overdose" }}
+      ]
+    }
+  },
+  "aggs": {
+    "twp": {
+      "terms": {
+        "field":   "twp.keyword",      
+        "order": { "_count": "desc" } 
+      }
+    }
+  }
+}
+
+
+res :
+{
+  "took" : 105,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1948,
+    "max_score" : 0.0,
+    "hits" : [ ]
+  },
+  "aggregations" : {
+    "twp" : {
+      "doc_count_error_upper_bound" : 22,
+      "sum_other_doc_count" : 929,
+      "buckets" : [
+        {
+          "key" : "POTTSTOWN",
+          "doc_count" : 203
+        },
+        {
+          "key" : "NORRISTOWN",
+          "doc_count" : 180
+        },
+        {
+          "key" : "UPPER MORELAND",
+          "doc_count" : 110
+        },
+
 ```
 
 ## Kibana
