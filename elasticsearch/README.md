@@ -22,6 +22,7 @@ GET <nom de votre index>/_count
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
 ```
+utilitaire:
 
 GET 911call/
 
@@ -48,6 +49,7 @@ PUT 911call
 }
 
 
+qu1 :
 
 GET /911call/call/_count
 {
@@ -69,8 +71,21 @@ GET /911call/call/_count
   }
 }
 
+res :
+{
+  "count" : 717,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
 
 
+
+
+qu2 :
 
 POST /911call/call/_count
 {
@@ -98,7 +113,91 @@ POST /911call/call/_count
     }
 }
 
+res :
+{
+  "count" : 75591,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
 
+{
+  "count" : 54549,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
+
+{
+  "count" : 24426,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
+
+
+
+
+qu 3:
+
+POST /911call/call/_search
+{
+    "size": 0,
+     "aggs" : {
+         "call" : {
+            "date_histogram": {
+                "field": "timeStamp",
+                "interval": "1M",
+                "time_zone": "Europe/Berlin",
+                "order" : { "_count" : "desc" }
+            }
+        }
+    }
+}
+
+res :
+
+{
+  "took" : 85,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 153195,
+    "max_score" : 0.0,
+    "hits" : [ ]
+  },
+  "aggregations" : {
+    "call" : {
+      "buckets" : [
+        {
+          "key_as_string" : "2016-01-01T00:00:00.000+01:00",
+          "key" : 1451602800000,
+          "doc_count" : 13096
+        },
+        {
+          "key_as_string" : "2016-10-01T00:00:00.000+02:00",
+          "key" : 1475272800000,
+          "doc_count" : 12502
+        },
+        {
+          "key_as_string" : "2016-12-01T00:00:00.000+01:00",
+          "key" : 1480546800000,
+          "doc_count" : 12162
+        },
 
 
 
