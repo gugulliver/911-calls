@@ -36,6 +36,10 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 ? 
 db.calls.createIndex( {coordinates: "2dsphere" } )
 db.calls.drop()
+db.calls.findOne()
+db.calls.explain()
+show dbs
+
 
 db.calls.find({ 
    coordinates :{
@@ -65,7 +69,7 @@ db.calls.aggregate([
 db.calls.aggregate([
     { 
       $group: {
-        _id: "EMS",
+        title: "EMS",
         count: { $sum: 1 } 
       }
     }
@@ -99,6 +103,11 @@ db.calls.aggregate([
         }
     ])
 	
+    re:
+{ "_id" : "POTTSTOWN", "count" : 203 }
+{ "_id" : "NORRISTOWN", "count" : 180 }
+{ "_id" : "UPPER MORELAND", "count" : 110 }
+
 	
 	
 	db.calls.aggregate([
@@ -106,10 +115,10 @@ db.calls.aggregate([
             $group : {
                 _id : {
                     month: {
-                       $month: "$date" 
+                       $month: "$timeStamp" 
                     },
                     year: {
-                        $year: "$date"
+                        $year: "$timeStamp"
                     }
                 },
                 count: { $sum: 1 }
@@ -117,13 +126,21 @@ db.calls.aggregate([
         },
         {
             $sort: {
-                "count": -1
+                count: -1
             }
         },
         {
             $limit: 3
         }
-    ])```
+    ])
+    
+{ "_id" : "1/2016", "count" : 13084 }
+{ "_id" : "10/2016", "count" : 12502 }
+{ "_id" : "12/2016", "count" : 12162 }
+
+
+//timeStamp
+    ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
