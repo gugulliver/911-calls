@@ -32,8 +32,98 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
 ```
-TODO : ajouter les requêtes MongoDB ici
-```
+
+? 
+db.calls.createIndex( {coordinates: "2dsphere" } )
+db.calls.drop()
+
+db.calls.find({ 
+   coordinates :{
+    $near : {
+       $geometry : {   
+          index : "Point" ,
+          coordinates : [-75.283783, 40.241493 ]
+         },
+      $maxDistance : 500
+     }
+   }
+ }).count()
+717
+
+
+
+
+
+db.calls.aggregate([
+    { 
+      $group: {
+        _id: "$category",
+        count: { $sum: 1 } 
+      }
+    }
+])
+db.calls.aggregate([
+    { 
+      $group: {
+        _id: "EMS",
+        count: { $sum: 1 } 
+      }
+    }
+])
+
+
+db.calls.aggregate([
+        {
+            $match: {
+                "title": 
+                {
+                    $regex:
+                        ".*OVERDOSE.*"  
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$twp",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: {
+                 "count": -1
+            }
+        
+        },
+        {
+            $limit : 3
+        }
+    ])
+	
+	
+	
+	db.calls.aggregate([
+        {
+            $group : {
+                _id : {
+                    month: {
+                       $month: "$date" 
+                    },
+                    year: {
+                        $year: "$date"
+                    }
+                },
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: {
+                "count": -1
+            }
+        },
+        {
+            $limit: 3
+        }
+    ])```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
 
